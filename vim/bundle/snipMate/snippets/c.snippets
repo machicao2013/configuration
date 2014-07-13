@@ -1,0 +1,349 @@
+# main()
+snippet main
+	int main(int argc, const char *argv[])
+	{
+		${1}
+		return 0;
+	}
+snippet main2
+	int main()
+	{
+		${1}
+		return 0;
+	}
+
+snippet args
+	int argc, const char *argv[]
+# #include <...>
+snippet inc
+	#include <${1:stdio}.h>${2}
+snippet incl
+	#include <${1:iostream}>${2}
+# #include "..."
+snippet Inc
+	#include "${1:`Filename("$1.h")`}"${2}
+# #ifndef ... #define ... #endif
+snippet Def
+	#ifndef $1
+	#define ${1:SYMBOL} ${2:value}
+	#endif${3}
+snippet def
+	#define 
+snippet ifdef
+	#ifdef ${1:FOO}
+		${2:#define }
+	#endif
+snippet #if
+	#if ${1:FOO}
+		${2}
+	#endif
+# Header Include-Guard
+# (the randomizer code is taken directly from TextMate; it could probably be
+# cleaner, I don't know how to do it in vim script)
+snippet once
+	#ifndef ${1:_`toupper(Filename('', 'UNTITLED'))`_H_}
+	#define $1
+
+	${2}
+
+	#endif /* end of include guard: $1 */
+# If Condition
+snippet if
+	if (${1:/* condition */}) {
+		${2:/* code */}
+	}
+snippet el
+	else {
+		${1}
+	}
+# Tertiary conditional
+snippet t
+	${1:/* condition */} ? ${2:a} : ${3:b}
+# Do While Loop
+snippet do
+	do {
+		${2:/* code */}
+	} while (${1:/* condition */});
+# While Loop
+snippet wh
+	while (${1:/* condition */}) {
+		${2:/* code */}
+	}
+# For Loop
+snippet for
+	for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+		${4}
+	}
+# Custom For Loop
+snippet forr
+	for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
+		${5:/* code */}
+	}
+snippet forx
+	for (int ${1:i = 0}; ${2:i < 10}; ${3:i++}) {
+		${5:/* code */}
+	}
+# Function
+snippet fun
+	${1:void} ${2:function_name}(${3}) {
+		${4:/* code */}
+	}
+# Function Declaration
+snippet fund
+	${1:void} ${2:function_name}(${3});${4}
+# Typedef
+snippet td
+	typedef ${1:int} ${2:MyCustomType};${3}
+# Struct
+snippet st
+	struct ${1:`Filename('$1_t', 'name')`}
+	{
+		${3:/* data */}
+	}${2: /* optional variable list */};${4}
+# Typedef struct
+snippet tds
+	typedef struct ${1:MyStruct}
+	{
+		${3:/* data */}
+	} ${2:$1_s};
+# Typdef enum
+snippet tde
+	typedef enum ${1:MyEnum}
+	{
+		${3:/* data */}
+	} ${2:$1_e};
+# printf
+# unfortunately version this isn't as nice as TextMates's, given the lack of a
+# dynamic `...`
+snippet pr
+	printf("${1}%s\n"${2});${3}
+# fprintf (again, this isn't as nice as TextMate's version, but it works)
+snippet fpr
+	fprintf(${1:stderr}, "${2:%s}\n"${3});${4}
+snippet un
+	unsigned
+snippet defcpp
+	#ifdef __cplusplus
+	extern "C" {
+	#endif
+
+	#ifdef __cplusplus
+	}
+	#endif
+# file comment
+snippet file
+	/*
+	 * `expand("%:t")` - ${1}
+	 *
+	 * Copyright (C) `strftime("%Y")` ${2:`g:snip_company`}
+	 *
+	 * Author: ${3:`g:snip_author` (`g:snip_mail`)}
+	 * Create: `strftime("%Y-%m-%d %H:%M:%S")`
+	 *
+	 * History:
+	 * --------
+	 * `strftime("%Y-%m-%d")`	v1.0	$3
+	 *     1. Initial revision.
+	 */
+	${4}
+
+snippet runtest
+	#include <${1:stdio}.h>
+	#include <${2:CUnit/CUnit}.h>
+	#include <${3:CUnit/Basic}.h>
+
+	int init_suit()
+	{
+		return 0;
+	}
+
+	int cleanup_suit()
+	{
+		return 0;
+	}
+
+	void test1()
+	{
+		CU_ASSERT(1);
+	}
+
+	void test2()
+	{
+		CU_ASSERT(1);
+	}
+
+	int add_suite()
+	{
+		CU_pSuite pSuite = NULL;
+		pSuite = CU_add_suite("test parser", init_suit, cleanup_suit);
+		if (NULL == pSuite)
+			return 1;
+		if (NULL == CU_add_test(pSuite, "test1", test1))
+		{
+			return 1;
+		}
+		if (NULL == CU_add_test(pSuite, "test2", test2))
+		{
+			return 1;
+		}
+		return 0;
+	}
+
+	int main()
+	{
+		if (CUE_SUCCESS != CU_initialize_registry())
+		{
+			return CU_get_error();
+		}
+
+		if (add_suite() != 0)
+		{
+			CU_cleanup_registry();
+			return CU_get_error();
+		}
+
+		CU_basic_run_tests();
+
+		CU_cleanup_registry();
+
+		return CU_get_error();
+	}
+
+snippet cua
+	CU_ASSERT(${1});
+snippet cut
+	CU_ASSERT_TRUE(${1});
+snippet cue
+	CU_ASSERT_EQUAL(${1:actual}, ${2:expected});
+snippet cune
+	CU_ASSERT_NOT_EQUAL(${1:actual}, ${2:expected})
+snippet server
+	#include <stdlib.h>
+	#include <sys/types.h>
+	#include <stdio.h>
+	#include <sys/socket.h>
+	#include <netinet/in.h>
+	#include <string.h>
+
+	int main()
+	{
+		int listenfd,clientfd;
+		struct sockaddr_in server_addr,client_addr;
+		int sin_size;
+		unsigned short portnum=8888;
+		listenfd = socket(AF_INET, SOCK_STREAM, 0);
+		if(-1 == listenfd)
+		{
+			printf("socket fail ! \r\n");
+			return -1;
+		}
+
+		bzero(&server_addr,sizeof(struct sockaddr_in));
+		server_addr.sin_family=AF_INET;
+		server_addr.sin_addr.s_addr=htonl(INADDR_ANY);
+		server_addr.sin_port=htons(portnum);
+
+		if(-1 == bind(listenfd,(struct sockaddr *)(&server_addr), sizeof(struct sockaddr)))
+		{
+			printf("bind fail !\r\n");
+			return -1;
+		}
+
+		if(-1 == listen(listenfd,5))
+		{
+			printf("listen fail !\r\n");
+			return -1;
+		}
+
+		char recvbuf[1024];
+		sin_size = sizeof(struct sockaddr_in);
+
+		while(1)
+		{
+			clientfd = accept(listenfd, (struct sockaddr *)(&client_addr), &sin_size);
+			if(-1 == clientfd)
+			{
+				printf("accept fail !\r\n");
+				return -1;
+			}
+
+			// don't need receive all 1024 bytes, if it receive some bytes(less than 1024),
+			// it will receive
+			ssize_t len = read(clientfd, recvbuf, 1024);
+			recvbuf[len] = '\0';
+
+			printf("%s\n", recvbuf);
+			close(clientfd);
+		}
+		close(listenfd);
+		return 0;
+	}
+
+snippet client
+	#include <stdlib.h>
+	#include <sys/types.h>
+	#include <stdio.h>
+	#include <sys/socket.h>
+	#include <netinet/in.h>
+	#include <string.h>
+
+	int main()
+	{
+		int clientfd;
+		int recbytes;
+		int sin_size;
+		char buffer[1024] = {0};
+		struct sockaddr_in s_add;
+		unsigned short portnum = 8888;
+		printf("Hello,welcome to client !\r\n");
+
+		clientfd = socket(AF_INET, SOCK_STREAM, 0);
+		if(-1 == clientfd)
+		{
+			printf("socket fail ! \r\n");
+			return -1;
+		}
+		printf("socket ok !\r\n");
+
+		bzero(&s_add,sizeof(struct sockaddr_in));
+		s_add.sin_family=AF_INET;
+		s_add.sin_addr.s_addr= inet_addr("${1:192.168.102.96}");
+		s_add.sin_port=htons(portnum);
+		printf("s_addr = %#x ,port : %#x\r\n",s_add.sin_addr.s_addr,s_add.sin_port);
+
+		if(-1 == connect(clientfd,(struct sockaddr *)(&s_add), sizeof(struct sockaddr)))
+		{
+			printf("connect fail !\r\n");
+			return -1;
+		}
+		printf("connect ok !\r\n");
+
+		// don't need receive all 1024 bytes, if it receive some bytes(less than 1024),
+		// it will receive
+		if(-1 == (recbytes = read(clientfd,buffer,1024)))
+		{
+			printf("read data fail !\r\n");
+			return -1;
+		}
+		printf("read ok\r\nREC:\r\n");
+		buffer[recbytes]='\0';
+		printf("%s\r\n",buffer);
+		getchar();
+		close(clientfd);
+		return 0;
+	}
+
+snippet printbytes
+	void print_bytes(char *bytes, int length, int line_count)
+	{
+		int i = 1;
+		for(; i <= length; ++i)
+		{
+			printf("%02x\t", (unsigned char)(*(bytes + i - 1)));
+			if(line_count != 0 && i % line_count == 0)
+			{
+				printf("\n");
+			}
+		}
+	}
+

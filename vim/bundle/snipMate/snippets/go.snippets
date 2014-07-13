@@ -1,0 +1,47 @@
+# main()
+snippet main
+	package main
+
+	import "fmt"
+
+	func main() {
+		${1}
+	}
+# If Condition
+snippet if
+	if ${1:/* condition */} {
+		${2:/* code */}
+	}
+snippet el
+	else {
+		${1}
+	}
+snippet for
+	for ${2:i} = 0; $2 < ${1:count}; $2${3:++} {
+		${4:/* code */}
+	}
+snippet prl
+	fmt.Println(${1});
+snippet prf
+	fmt.Printf(${1});
+snippet test
+	package
+
+	import "testing"
+
+	func Test(t *testing.T) {
+		${1}
+	}
+snippet err
+	t.Errorf(${1})
+snippet errp
+	if err != nil {
+		fmt.Println(${1})
+		return
+	}
+snippet ifel
+	if ${1} {
+	
+	} else {
+	
+	}
