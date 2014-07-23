@@ -191,6 +191,8 @@ nmap <leader>zz <C-w>o
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 
+set wrap
+
 " cppSyntaxCheck
 let g:cpp_compiler="/usr/bin/gcc"
 let g:enable_warning=1
@@ -211,6 +213,7 @@ let s:licenseTag = s:licenseTag . "All right reserved\<enter>"
 let g:DoxygenToolkit_licenseTag = s:licenseTag
 let g:DoxygenToolkit_briefTag_funcName="yes"
 let g:doxygen_enhanced_color=1
+let g:DoxygenToolkit_commentType="C++"
 
 " for Haskell
 :let hs_highlight_delimiters=1            " 高亮定界符
@@ -225,6 +228,10 @@ let g:templates_no_autocmd = 1
 let g:username = "maxingsong"
 let g:email = "maxingsong@xunlei.com"
 
+" NERDCommenter.vim
+let NERDSpaceDelims=1 "让注释符与语句之间留一个空格
+let NERDCompactSexyComs=1 "多行注释时样子更好看
+
 " Loading powerline
 let g:Powerline_symbols = 'fancy'
 
@@ -236,6 +243,8 @@ map tl :Tlist<CR><c-l>
 map <C-n> :bn<cr>
 " bp
 map <C-p> :bp<cr>
+
+map <F3> :set nopaste<CR>
 
 " ======= 编译 && 运行 ======= "
 
@@ -292,3 +301,4 @@ imap <c-r> <ESC>:call RunCode()<CR>
 vmap <c-r> <ESC>:call RunCode()<CR>
 
 "}}}
+
