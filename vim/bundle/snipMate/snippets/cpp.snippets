@@ -25,10 +25,18 @@ snippet cl
 	private:
 
 	public:
-		$1(${2:arguments});
+		$1();
 		virtual ~$1();
+	protected:
+		DECL_LOGGER(logger);
 	};
 
+# safe delete
+snippet del
+	if(NULL != ${1:ptr}) {
+		delete $1
+		$1 = NULL;
+	}
 snippet debug
 	LOG4CPLUS_DEBUG(logger, ${1});
 snippet info
