@@ -1,0 +1,157 @@
+" Vim Config file
+
+" Vundle and plugins
+" Vundle
+set nocompatible"{{{
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'vim-scripts/DoxygenToolkit.vim'
+Bundle 'vim-scripts/mru.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'Townk/vim-autoclose'
+Bundle 'scrooloose/syntastic'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'duganchen/vim-soy'
+Bundle 'bronson/vim-trailing-whitespace'
+Bundle 'scrooloose/nerdtree'
+Bundle 'majutsushi/tagbar'
+Bundle 'jlanzarotta/bufexplorer'
+Bundle 'fholgado/minibufexpl.vim'
+" This plugin needs compilation
+Bundle 'Valloric/YouCompleteMe'
+" Bundle 'mattn/zencoding-vim'
+" Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'SirVer/ultisnips'
+" Bundle 'tpope/vim-speeddating'"}}}
+
+" YouCompleteMe
+let g:ycm_key_list_select_completion=['<Tab>']
+let g:ycm_key_list_previous_completion=['<S-Tab>']
+let g:ycm_key_invoke_completion=''
+let g:ycm_confirm_extra_conf=0
+
+" Ultisnips
+let g:UltiSnipsExpandTrigger = '<c-CR>'
+let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+let g:UltiSnipsListSnippets = '<c-l>'
+let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsSnippetDirectories = ['my_snips', 'UltiSnips']
+" Don't forget to symlink ~/.vim/my_snips into configs!
+"ino <expr> <CR> firs_func() ? abc() : cde()
+
+" Don't forget to put the python checker in
+" ~/.vim/bundle/syntastic/syntax_checkers/...
+let g:syntastic_python_checkers=['']
+
+" nerdcommenter
+let g:NERDSpaceDelims = 1
+
+" Global settings
+filetype plugin indent on
+set number
+syntax on
+set backspace=indent,eol,start
+set softtabstop=4
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set showcmd
+set ruler
+set laststatus=2
+set foldenable
+set foldmethod=marker
+set autowrite
+set history=200
+set completeopt=menuone,longest     " complete options (insert)
+set pumheight=10                    " complete popup height
+set scrolloff=5                     " minimal number of screen lines to keep beyond the cursor
+set cinoptions=:0,l1,g0,t0,(0,(s    " C kind language indent options))    "
+
+set ignorecase
+set smartcase
+set incsearch
+set title
+set wildchar=<Tab> wildmenu wildmode=full
+set hlsearch
+set mouse=a
+set autoindent
+set showmode
+set showmatch
+set autoread
+set nobackup
+set noswapfile
+colorscheme slate
+
+set encoding=utf-8
+set termencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=gb2312,utf-8,gbk
+set fileformat=unix
+
+" Restore the last quit position when open file.
+autocmd BufReadPost *
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \     exe "normal g'\"" |
+            \ endif
+
+" set backupdir=~/.vim/backup/
+" set directory=~/.vim/backup/
+set autochdir " IMPORTANT: Causes some plugins not to work
+
+let mapleader = ","
+" set guifont=Liberation\ Mono\ 14
+
+" Quick reloading of files
+autocmd BufEnter,BufWinEnter,CursorHold filename :checktime
+
+" Delete current line
+nnoremap <C-d> dd
+
+" Use Alt, up/down to move a line of text
+inoremap <A-Up> <Esc>VdkPi
+inoremap <A-Down> <Esc>Vdpi
+nnoremap <A-Up> <Esc>VdkP
+nnoremap <A-Down> <Esc>Vdp
+
+" Save/Quit/Copy/Paste/Undo/Redo
+inoremap <C-s> <C-o>:w<CR>
+nnoremap <C-s> :w<CR>
+inoremap <C-q> <C-o>:q<CR>
+nnoremap <C-q> :q<CR>
+vnoremap <C-c> "+y
+nnoremap <C-v> "+p
+inoremap <C-v>  <C-o>"+p
+vnoremap <C-x> "+x
+
+" Map window jumping keys
+nnoremap <c-k> <c-w>k
+nnoremap <c-j> <c-w>j
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+set splitright
+
+" Delete trailing whitespace
+" removes trailing spaces of python files
+" (and restores cursor position)
+fun! StripTrailingWS()
+  let l = line(".")
+  let c = col(".")
+  keepjumps %s/\s\+$//e
+  keepjumps call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :keepjumps call StripTrailingWS()
+
+" Redraw screen
+nnoremap <F5> :redr!<CR>
+
+" I only ever want to look in my buffers, usually
+let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_extensions = ['buffertag']
