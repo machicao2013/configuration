@@ -1,5 +1,76 @@
 " Vim Config file
 
+" key Bindings
+let mapleader = ","
+let maplocalleader="\\"
+"{{{
+" Delete current line
+nnoremap <C-d> dd
+map <Space> :
+" bn
+map <C-n> :bn<cr>
+" bp
+map <C-p> :bp<cr>
+
+map <F3> :set nopaste<CR>
+
+" Use Alt, up/down to move a line of text
+inoremap <A-Up> <Esc>VdkPi
+inoremap <A-Down> <Esc>Vdpi
+nnoremap <A-Up> <Esc>VdkP
+nnoremap <A-Down> <Esc>Vdp
+
+" Save/Quit/Copy/Paste/Undo/Redo
+inoremap <C-s> <C-o>:w<CR>
+nnoremap <C-s> :w<CR>
+inoremap <C-q> <C-o>:q<CR>
+nnoremap <C-q> :q<CR>
+vnoremap <C-c> "+y
+" nnoremap <C-v> "+p
+" inoremap <C-v>  <C-o>"+p
+vnoremap <C-x> "+x
+
+" Map window jumping keys
+nnoremap <c-k> <c-w>k
+nnoremap <c-j> <c-w>j
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+set splitright
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+"make Y consistent with C and D
+nnoremap Y y$
+
+" toggle highlight trailing whitespace
+nmap <silent> <leader>l :set nolist!<CR>
+
+" Ctrol-E to switch between 2 last buffers
+nmap <C-E> :b#<CR>
+
+" ,e to fast finding files. just type beginning of a name and hit TAB
+nmap <leader>e :e **/
+
+" Make shift-insert work like in Xterm
+map <S-Insert> <MiddleMouse>
+map! <S-Insert> <MiddleMouse>
+
+" ,n to get the next location (compilation errors, grep etc)
+nmap <leader>n :cn<CR>
+nmap <leader>p :cp<CR>
+
+" Ctrl-N to disable search match highlight
+nmap <silent> <C-N> :silent noh<CR>
+
+" center display after searching
+nnoremap n   nzz
+nnoremap N   Nzz
+nnoremap *   *zz
+nnoremap #   #zz
+nnoremap g*  g*zz
+nnoremap g#  g#z"}}}
+
 " Vundle and plugins
 " Vundle
 set nocompatible"{{{
@@ -23,35 +94,146 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar'
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'fholgado/minibufexpl.vim'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'tomasr/molokai'
+Bundle 'Yggdroot/indentLine'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'mhinz/vim-startify'
+Bundle 'vim-scripts/snipMate'
+Bundle 'vim-scripts/echofunc.vim'
 " This plugin needs compilation
 Bundle 'Valloric/YouCompleteMe'
 " Bundle 'mattn/zencoding-vim'
 " Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'SirVer/ultisnips'
+" Bundle 'SirVer/ultisnips'
 " Bundle 'tpope/vim-speeddating'"}}}
 
 " YouCompleteMe
-let g:ycm_key_list_select_completion=['<Tab>']
-let g:ycm_key_list_previous_completion=['<S-Tab>']
+" http://www.perlface.eu/?p=716
+let g:ycm_key_list_select_completion=['<C-TAB>','<Down>']
+let g:ycm_key_list_previous_completion=['<C-S-TAB>', '<Up>']
 let g:ycm_key_invoke_completion=''
 let g:ycm_confirm_extra_conf=0
+" let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_cache_omnifunc=0
+" let g:ycm_semantic_triggers = {}
+" let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
+" set completeopt-=preview
+
 
 " Ultisnips
-let g:UltiSnipsExpandTrigger = '<c-CR>'
-let g:UltiSnipsJumpForwardTrigger = '<c-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
-let g:UltiSnipsListSnippets = '<c-l>'
-let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsExpandTrigger = '<c-CR>'"{{{
+" let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+" let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+" let g:UltiSnipsListSnippets = '<c-l>'
+" let g:UltiSnipsEditSplit="vertical"
 " let g:UltiSnipsSnippetDirectories = ['my_snips', 'UltiSnips']
 " Don't forget to symlink ~/.vim/my_snips into configs!
 "ino <expr> <CR> firs_func() ? abc() : cde()
 
 " Don't forget to put the python checker in
 " ~/.vim/bundle/syntastic/syntax_checkers/...
-let g:syntastic_python_checkers=['']
+let g:syntastic_python_checkers=['']"}}}
+
+" Rainbow Parentheses
+"{{{
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces"}}}
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
+
+" mru
+let MRU_Window_Height = 10
+nmap <Leader>r :MRU<cr>
+
+" indentLine
+let g:indentLine_noConcealCursor = 1
+let g:indentLine_color_term = 0
+let g:indentLine_char = '|'
+
+" taglist
+let g:Tlist_WinWidth = 25"{{{
+let g:Tlist_Use_Right_Window = 0
+let g:Tlist_Auto_Update = 1
+let g:Tlist_Process_File_Always = 1
+let g:Tlist_Exit_OnlyWindow = 1
+let g:Tlist_Show_One_File = 1
+let g:Tlist_Enable_Fold_Column = 0
+let g:Tlist_Auto_Highlight_Tag = 1
+let g:Tlist_GainFocus_On_ToggleOpen = 1
+nmap <Leader>t :TlistToggle<cr>
+" tl
+map tl :Tlist<CR><c-l>"}}}
+
+" nerdtree
+let g:NERDTreeWinPos = "right""{{{
+let g:NERDTreeWinSize = 30
+let g:NERDTreeShowLineNumbers = 1
+let g:NERDTreeQuitOnOpen = 1
+nmap <Leader>f :NERDTreeToggle<CR>
+nmap <Leader>F :NERDTreeFind<CR>
+" nt
+map nt :NERDTree<CR>"}}}
+
+" molokai
+let g:molokai_original = 1
+let g:rehash256 = 1
+
+" solarized
+syntax enable
+" set background=dark
+set background=light
+let g:solarized_termcolors=16
+let g:solarized_termtrans=1
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+colorscheme darkblue
+" colorscheme solarized
+
+" snipMate
+let g:snip_author   = "maxingsong"
+let g:snip_mail     = "maxingsong@xunlei.com"
+let g:snip_company  = "Xunlei CO. Ltd"
+
+" Echofunc (echofunc.vim)
+let g:EchoFuncKeyNext='<S-n>'
+let g:EchoFuncKeyPrev='<S-p>'
+let g:EchoFuncAutoStartBalloonDeclaration = 1
+nmap <F9> <Esc>:!ctags -R --fields=+lS *<CR>
+
+" Loading DoxygenToolkit
+let g:DoxygenToolkit_authorName="maxingsong, maxingsong@xunlei.com"
+let s:licenseTag = "Copyright(C) "
+let s:licenseTag = s:licenseTag . "xunlei"
+let s:licenseTag = s:licenseTag . "All right reserved\<enter>"
+let g:DoxygenToolkit_licenseTag = s:licenseTag
+let g:DoxygenToolkit_briefTag_funcame="yes"
+let g:doxygen_enhanced_color=1
+let g:DoxygenToolkit_commentType="C++"
 
 " Global settings
 filetype plugin indent on
@@ -87,7 +269,15 @@ set showmatch
 set autoread
 set nobackup
 set noswapfile
-colorscheme slate
+" colorscheme slate
+" set guifont=Liberation\ Mono\ 14
+" set backupdir=~/.vim/backup/
+" set directory=~/.vim/backup/
+set autochdir " IMPORTANT: Causes some plugins not to work
+
+" Quick reloading of files
+autocmd BufEnter,BufWinEnter,CursorHold filename :checktime
+
 
 set encoding=utf-8
 set termencoding=utf-8
@@ -95,47 +285,16 @@ set fileencoding=utf-8
 set fileencodings=gb2312,utf-8,gbk
 set fileformat=unix
 
+" I only ever want to look in my buffers, usually
+let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_extensions = ['buffertag']
+
+" Personal Configuration
 " Restore the last quit position when open file.
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \     exe "normal g'\"" |
             \ endif
-
-" set backupdir=~/.vim/backup/
-" set directory=~/.vim/backup/
-set autochdir " IMPORTANT: Causes some plugins not to work
-
-let mapleader = ","
-" set guifont=Liberation\ Mono\ 14
-
-" Quick reloading of files
-autocmd BufEnter,BufWinEnter,CursorHold filename :checktime
-
-" Delete current line
-nnoremap <C-d> dd
-
-" Use Alt, up/down to move a line of text
-inoremap <A-Up> <Esc>VdkPi
-inoremap <A-Down> <Esc>Vdpi
-nnoremap <A-Up> <Esc>VdkP
-nnoremap <A-Down> <Esc>Vdp
-
-" Save/Quit/Copy/Paste/Undo/Redo
-inoremap <C-s> <C-o>:w<CR>
-nnoremap <C-s> :w<CR>
-inoremap <C-q> <C-o>:q<CR>
-nnoremap <C-q> :q<CR>
-vnoremap <C-c> "+y
-nnoremap <C-v> "+p
-inoremap <C-v>  <C-o>"+p
-vnoremap <C-x> "+x
-
-" Map window jumping keys
-nnoremap <c-k> <c-w>k
-nnoremap <c-j> <c-w>j
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-set splitright
 
 " Delete trailing whitespace
 " removes trailing spaces of python files
@@ -152,6 +311,51 @@ autocmd BufWritePre * :keepjumps call StripTrailingWS()
 " Redraw screen
 nnoremap <F5> :redr!<CR>
 
-" I only ever want to look in my buffers, usually
-let g:ctrlp_cmd = 'CtrlPBuffer'
-let g:ctrlp_extensions = ['buffertag']
+func! CompileCode()
+    exec "w"
+    if &filetype == "c"
+        exec "!gcc -Wall -std=c99 %<.c -o %<"
+    elseif &filetype == "cpp"
+        exec "!g++ -Wall -std=c++98 %<.cpp -o %<"
+    elseif &filetype == "java"
+        exec "!javac %<.java"
+    elseif &filetype == "haskell"
+        exec "!ghc --make %<.hs -o %<"
+    elseif &filetype == "lua"
+        exec "!lua %<.lua"
+    elseif &filetype == "perl"
+        exec "!perl %<.pl"
+    elseif &filetype == "python"
+        exec "!python %<.py"
+    elseif &filetype == "ruby"
+        exec "!ruby %<.rb"
+    elseif &filetype == "go"
+        exec "!go run %<.go"
+    endif
+endfunc
+
+func! RunCode()
+    exec "w"
+    if &filetype == "c" || &filetype == "cpp" || &filetype == "haskell"
+        exec "! ./%<"
+    elseif &filetype == "java"
+        exec "!java %<"
+    elseif &filetype == "lua"
+        exec "!lua %<.lua"
+    elseif &filetype == "perl"
+        exec "!perl %<.pl"
+    elseif &filetype == "python"
+        exec "!python %<.py"
+    elseif &filetype == "ruby"
+        exec "!ruby %<.rb"
+    endif
+endfunc
+
+map <c-c> :call CompileCode()<CR>
+imap <c-c> <ESC>:call CompileCode()<CR>
+vmap <c-c> <ESC>:call CompileCode()<CR>
+
+map <c-r> :call RunCode()<CR>
+imap <c-r> <ESC>:call RunCode()<CR>
+vmap <c-r> <ESC>:call RunCode()<CR>
+
