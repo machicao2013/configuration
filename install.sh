@@ -1,7 +1,7 @@
 #!/bin/bash
 
 base_dir=`pwd`
-vim_install_dir=/home/machicao/opt/vim74a
+vim_install_dir=/home/riyuexingchen/opt/vim74a
 
 test -d ${vim_install_dir} || mkdir -p ${vim_install_dir}
 
@@ -32,8 +32,18 @@ make install
 
 cp -rf runtime/* ${vim_install_dir}/
 
+echo "export PATH=${vim_install_dir}/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc
+
+# install vundle
+install_dir="/home/riyuexingchen/.vim/bundle/vundle"
+
+test -d ${install_dir} || mkdir -p ${install_dir}
+
+git clone https://github.com/gmarik/vundle.git ${install_dir}
+
 cd ${base_dir}
-cat ./bundle.conf >> ~/.vimrc
+cat ./vimrc.new >> ~/.vimrc
 
 vim +BundleInstall +qall
 
